@@ -1,0 +1,5 @@
+A* Path Planning Algorithm
+---------------------------
+A* is a graph traversal and search algorithm. It is widely used for pathfinding and graph traversal.
+The algorithm calculates the shortest path between a start node and a goal node.
+A* combines the concepts of Dijkstra's algorithm and heuristics for efficient searching.

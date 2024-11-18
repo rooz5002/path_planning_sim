@@ -1,6 +1,6 @@
 # path_planning_sim
-Path Planing Simulation
+Path Planning Simulation
 
 Author: Amir Ali Mokhtarzadeh
 
-This package still is in development stage and only can be used for purpose of testing
+This package is still in the development stage and can only be used for testing.

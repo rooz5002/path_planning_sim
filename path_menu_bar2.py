@@ -15,6 +15,8 @@
 
 import tkinter as tk
 from tkinter import filedialog, messagebox
+import tkinter as tk
+from graph_styles import plot_graph
 
 
 class MenuBar:
@@ -48,6 +50,12 @@ class MenuBar:
         path_menu.add_command(label="Show Neighbouring", command=self.show_neighbouring)
         path_menu.add_command(label="Show Calculations", command=self.show_calculations)
         self.menu.add_cascade(label="Path Planning", menu=path_menu)
+        
+        # Graphs Menu
+        graphs_menu = tk.Menu(self.menu, tearoff=0)
+        graphs_menu.add_command(label="Graph Settings", command=self.open_graph_settings)
+        graphs_menu.add_command(label="Display Graph", command=self.display_graph)
+        self.menu.add_cascade(label="Graphs", menu=graphs_menu)
 
         # Help Menu
         help_menu = tk.Menu(self.menu, tearoff=0)
@@ -224,3 +232,46 @@ class MenuBar:
         tk.Button(input_window, text="OK", command=on_ok).pack()
         self.master.wait_window(input_window)
         return result["value"]
+
+    def open_graph_settings(self):
+        """Open a pop-up window for graph settings."""
+        settings_window = tk.Toplevel(self.master)
+        settings_window.title("Graph Settings")
+        settings_window.geometry("400x300")
+
+        # Graph Style
+        tk.Label(settings_window, text="Graph Style:").grid(row=0, column=0, padx=10, pady=10, sticky="w")
+        self.graph_style_var = tk.StringVar(value="line")
+        style_menu = tk.OptionMenu(settings_window, self.graph_style_var, "line", "scatter", "bar")
+        style_menu.grid(row=0, column=1, padx=10, sticky="w")
+
+        # Density
+        tk.Label(settings_window, text="Density (%):").grid(row=1, column=0, padx=10, pady=10, sticky="w")
+        self.density_var = tk.DoubleVar(value=10.0)
+        tk.Entry(settings_window, textvariable=self.density_var, width=10).grid(row=1, column=1, padx=10, sticky="w")
+
+        # Speed
+        tk.Label(settings_window, text="Speed (s):").grid(row=2, column=0, padx=10, pady=10, sticky="w")
+        self.speed_var = tk.DoubleVar(value=1.0)
+        tk.Entry(settings_window, textvariable=self.speed_var, width=10).grid(row=2, column=1, padx=10, sticky="w")
+
+        # Close Button
+        tk.Button(settings_window, text="Close", command=settings_window.destroy).grid(row=3, column=0, columnspan=2, pady=10)
+
+    def display_graph(self):
+        """Display the graph using the current settings."""
+        try:
+            style = self.graph_style_var.get()
+            density = self.density_var.get()
+            speed = self.speed_var.get()
+
+            # Example data; replace with actual data collection
+            densities = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+            a_star_times = [density * speed * 0.1 for density in densities]
+            q_learning_times = [density * speed * 0.15 for density in densities]
+
+            # Call the graph plotting function
+            plot_graph(style, densities, a_star_times, q_learning_times, self.master)
+
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to display graph: {e}")
